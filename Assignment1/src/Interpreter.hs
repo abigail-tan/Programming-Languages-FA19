@@ -1,6 +1,6 @@
 -- Interpreter for LambdaNat5
 -- numbers, conditionals, recursion, lists
-{-# LANGUAGE StandaloneDeriving, DeriveDataTypeable, TypeApplications, 
+{-# LANGUAGE StandaloneDeriving, DeriveDataTypeable, TypeApplications,
 ExplicitForAll, ScopedTypeVariables #-}
 
 
@@ -17,8 +17,8 @@ import Data.Data
 import Data.Generics.Traversable
 import qualified Data.Set as S
 
-deriving instance Data Id 
-deriving instance Data Exp 
+deriving instance Data Id
+deriving instance Data Exp
 
 
 execCBN :: Program -> Exp
@@ -29,12 +29,18 @@ evalCBN (EApp e1 e2) = case (evalCBN e1) of
     (EAbs i e1') -> evalCBN (subst i e2 e1')
     e1' -> EApp e1' e2
 evalCBN (EIf e1 e2 e3 e4) = if (evalCBN e1) == (evalCBN e2) then evalCBN e3 else evalCBN e4
-evalCBN (ELet i e1 e2) = evalCBN (EApp (EAbs i e2) e1) 
+evalCBN (ELet i e1 e2) = evalCBN (EApp (EAbs i e2) e1)
 evalCBN (ERec i e1 e2) = evalCBN (EApp (EAbs i e2) (EFix (EAbs i e1)))
-evalCBN (EFix e) = evalCBN (EApp e (EFix e)) 
+evalCBN (EFix e) = evalCBN (EApp e (EFix e))
 evalCBN (EMinusOne e) = case (evalCBN e) of
     ENat0 -> ENat0
     (ENatS e) -> e
+evalCBN (EHd e) = case (evalCBN e) of
+    ENil -> ENil
+    (ECons e1 e2) -> e1
+evalCBN (ETl e) = case (evalCBN e) of
+    ENil -> ENil
+    (ECons e1 e2) -> e2
 evalCBN (ENatS e') = ENatS (evalCBN e')
 evalCBN x = x
 
@@ -73,7 +79,7 @@ fresh = Id . (pickFresh $ infList) . S.fromList . fresh_
 newtype ID a = ID{unID :: a}
 
 -- adapted form this brilliant article: http://okmij.org/ftp/Haskell/generics.html
--- emap is nonparametric (see the link), but we don't care, since we only want to 
+-- emap is nonparametric (see the link), but we don't care, since we only want to
 -- apply it to nonparametric types like Exp anyway.
 -- We could fix this by adding a constraint like NonParametric a ~ 'True, where
 -- NonParametric is defined as:
@@ -100,24 +106,24 @@ emap f x = traverse x
 subst :: Id -> Exp -> Exp -> Exp
 subst id s e@(EVar id') | id == id' = s
                       | otherwise = e
-subst id s e@(EAbs id' e') = 
+subst id s e@(EAbs id' e') =
     -- to avoid variable capture, we first substitute id' with a fresh name inside the body
-    -- of the λ-abstraction, obtaining e''. 
-    -- Only then do we proceed to apply substitution of the original s for id in the 
+    -- of the λ-abstraction, obtaining e''.
+    -- Only then do we proceed to apply substitution of the original s for id in the
     -- body e''.
 
     -- writing `fresh (EApp (EVar id) (EApp e s))` is a roundabout way of saying the fresh
     -- variable must be fresh in id, e and s!
-    let f = fresh (EApp (EVar id) (EApp e s)) 
-        e'' = subst id' (EVar f) e' in 
+    let f = fresh (EApp (EVar id) (EApp e s))
+        e'' = subst id' (EVar f) e' in
         EAbs f $ subst id s e''
 subst id s e = emap (subst id s) e
 
 -- the trick with emap and traverse makes the code below unnessary:
 --
 -- subst id s (EApp e1 e2) = EApp (subst id s e1) (subst id s e2)
--- subst id s (ENat0) = ENat0 
--- subst id s (ENatS e) = ENatS (subst id s e) 
+-- subst id s (ENat0) = ENat0
+-- subst id s (ENatS e) = ENatS (subst id s e)
 -- subst id s (EIf e1 e2 e3 e4) = EIf (subst id s e1) (subst id s e2) (subst id s e3) (subst id s e4)
 -- -- subst id s (ELet i e1 e2) = subst id s (EApp (EAbs i e1) e2)
 -- -- subst id s (ERec i e1 e2) = subst id s (EApp (EAbs i e2) (EFix (EAbs i e1)))
@@ -127,7 +133,3 @@ subst id s e = emap (subst id s) e
 -- subst id s (ETl e) = ETl (subst id s e)
 -- subst id s ENil = ENil
 -- subst id s (ECons e l) = ECons (subst id s e) (subst id s l)
-
-
-
-
