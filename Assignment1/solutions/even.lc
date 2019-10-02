@@ -1,6 +1,3 @@
-let tail =\a.
-  tl a in
-
 let rec even =\x.
   if x = # then S 0
   else if (tl x) = # then 0
