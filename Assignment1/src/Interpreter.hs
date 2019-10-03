@@ -41,6 +41,8 @@ evalCBN (EHd e) = case (evalCBN e) of
 evalCBN (ETl e) = case (evalCBN e) of
     ENil -> ENil
     (ECons e1 e2) -> e2
+evalCBN ENil = ENil
+evalCBN (ECons e l) = ECons (evalCBN e) (evalCBN l)
 evalCBN (ENatS e') = ENatS (evalCBN e')
 evalCBN x = x
 
