@@ -1,14 +1,5 @@
----
-title: 'Rust Blog'
-disqus: hackmd
----
-
 Rust Blog
 ===
-
-## Table of Contents
-
-[TOC]
 
 Why Rust?
 ---
