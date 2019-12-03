@@ -4,6 +4,7 @@ Rust Blog
 Presentation
 ---
 [Presentation](https://docs.google.com/presentation/d/1HxLL8O-Poi9zExtFjL3AHoTjNg_jei0lW3lQ_qjr_cs/edit?usp=sharing)
+
 [Handout](https://drive.google.com/a/mail.chapman.edu/file/d/10x_ZEZtWROf0Fs-_A7Bv2xdRmRGndiQV/view?usp=sharing)
 
 Why Rust?
