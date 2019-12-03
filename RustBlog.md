@@ -1,6 +1,11 @@
 Rust Blog
 ===
 
+Presentation
+---
+[Presentation](https://docs.google.com/presentation/d/1HxLL8O-Poi9zExtFjL3AHoTjNg_jei0lW3lQ_qjr_cs/edit?usp=sharing)
+[Handout](https://drive.google.com/a/mail.chapman.edu/file/d/10x_ZEZtWROf0Fs-_A7Bv2xdRmRGndiQV/view?usp=sharing)
+
 Why Rust?
 ---
 We chose rust because it was the “most loved programming language” from a Stack Overflow developer survey every year since 2016. We thought it would be interesting to research a language that is not only syntactically similar to C++ but also memory efficient while maintaining high performance. Rust is able to maintain such a high performance because it has no runtime or garbage collector.
@@ -38,7 +43,3 @@ Articles on Rust
 * [How Rust Compares to Other Programming Languages](https://thenewstack.io/safer-future-rust/)
 * [Seven Reasons Why to Use Rust](https://www.techrepublic.com/article/rust-programming-language-seven-reasons-why-you-should-learn-it-in-2019/)
 * [Rust: the Good, the Bad, the Ugly](https://hackernoon.com/programming-in-rust-the-good-the-bad-the-ugly-d06f8d8b7738)
-
-Class Presentation
----
-[Rust PPT](https://docs.google.com/presentation/d/1HxLL8O-Poi9zExtFjL3AHoTjNg_jei0lW3lQ_qjr_cs/edit?usp=sharing)
